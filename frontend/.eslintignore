@@ -1,0 +1,5 @@
+dist
+src/generated
+
+.eslintrc.js
+*.config.js
