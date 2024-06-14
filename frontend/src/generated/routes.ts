@@ -11,18 +11,90 @@
 // Import Routes
 
 import { Route as rootRoute } from "./../routes/__root";
+import { Route as PublicImport } from "./../routes/_public";
+import { Route as ProtectedImport } from "./../routes/_protected";
+import { Route as IndexImport } from "./../routes/index";
+import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
+import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
 
 // Create/Update Routes
+
+const PublicRoute = PublicImport.update({
+  id: "/_public",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const ProtectedRoute = ProtectedImport.update({
+  id: "/_protected",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const IndexRoute = IndexImport.update({
+  path: "/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const ProtectedViewIndexRoute = ProtectedViewIndexImport.update({
+  path: "/view/",
+  getParentRoute: () => ProtectedRoute,
+} as any);
+
+const ProtectedHubIndexRoute = ProtectedHubIndexImport.update({
+  path: "/hub/",
+  getParentRoute: () => ProtectedRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
-  interface FileRoutesByPath {}
+  interface FileRoutesByPath {
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_protected": {
+      id: "/_protected";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof ProtectedImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_public": {
+      id: "/_public";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof PublicImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_protected/hub/": {
+      id: "/_protected/hub/";
+      path: "/hub";
+      fullPath: "/hub";
+      preLoaderRoute: typeof ProtectedHubIndexImport;
+      parentRoute: typeof ProtectedImport;
+    };
+    "/_protected/view/": {
+      id: "/_protected/view/";
+      path: "/view";
+      fullPath: "/view";
+      preLoaderRoute: typeof ProtectedViewIndexImport;
+      parentRoute: typeof ProtectedImport;
+    };
+  }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({});
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  ProtectedRoute: ProtectedRoute.addChildren({
+    ProtectedHubIndexRoute,
+    ProtectedViewIndexRoute,
+  }),
+});
 
 /* prettier-ignore-end */
 
@@ -31,7 +103,32 @@ export const routeTree = rootRoute.addChildren({});
   "routes": {
     "__root__": {
       "filePath": "__root.tsx",
-      "children": []
+      "children": [
+        "/",
+        "/_protected",
+        "/_public"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_protected": {
+      "filePath": "_protected.tsx",
+      "children": [
+        "/_protected/hub/",
+        "/_protected/view/"
+      ]
+    },
+    "/_public": {
+      "filePath": "_public.tsx"
+    },
+    "/_protected/hub/": {
+      "filePath": "_protected/hub/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/view/": {
+      "filePath": "_protected/view/index.tsx",
+      "parent": "/_protected"
     }
   }
 }
