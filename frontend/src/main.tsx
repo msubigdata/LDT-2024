@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client";
 import { ZodError } from "zod";
 
 import "@/styles/index.css";
+import { routeTree } from "./generated/routes";
 
 const rootElement = document.getElementById("root") as HTMLDivElement;
 
