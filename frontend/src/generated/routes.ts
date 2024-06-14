@@ -14,6 +14,7 @@ import { Route as rootRoute } from "./../routes/__root";
 import { Route as PublicImport } from "./../routes/_public";
 import { Route as ProtectedImport } from "./../routes/_protected";
 import { Route as IndexImport } from "./../routes/index";
+import { Route as PublicSignInIndexImport } from "./../routes/_public/sign-in/index";
 import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
 import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
 
@@ -32,6 +33,11 @@ const ProtectedRoute = ProtectedImport.update({
 const IndexRoute = IndexImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
+} as any);
+
+const PublicSignInIndexRoute = PublicSignInIndexImport.update({
+  path: "/sign-in/",
+  getParentRoute: () => PublicRoute,
 } as any);
 
 const ProtectedViewIndexRoute = ProtectedViewIndexImport.update({
@@ -83,6 +89,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProtectedViewIndexImport;
       parentRoute: typeof ProtectedImport;
     };
+    "/_public/sign-in/": {
+      id: "/_public/sign-in/";
+      path: "/sign-in";
+      fullPath: "/sign-in";
+      preLoaderRoute: typeof PublicSignInIndexImport;
+      parentRoute: typeof PublicImport;
+    };
   }
 }
 
@@ -94,6 +107,7 @@ export const routeTree = rootRoute.addChildren({
     ProtectedHubIndexRoute,
     ProtectedViewIndexRoute,
   }),
+  PublicRoute: PublicRoute.addChildren({ PublicSignInIndexRoute }),
 });
 
 /* prettier-ignore-end */
@@ -120,7 +134,10 @@ export const routeTree = rootRoute.addChildren({
       ]
     },
     "/_public": {
-      "filePath": "_public.tsx"
+      "filePath": "_public.tsx",
+      "children": [
+        "/_public/sign-in/"
+      ]
     },
     "/_protected/hub/": {
       "filePath": "_protected/hub/index.tsx",
@@ -129,6 +146,10 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/view/": {
       "filePath": "_protected/view/index.tsx",
       "parent": "/_protected"
+    },
+    "/_public/sign-in/": {
+      "filePath": "_public/sign-in/index.tsx",
+      "parent": "/_public"
     }
   }
 }
