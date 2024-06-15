@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 import { Icons } from "../modules/icons";
 import { buttonVariants } from "../ui/button";

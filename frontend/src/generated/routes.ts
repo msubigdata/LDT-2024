@@ -13,8 +13,8 @@
 import { Route as rootRoute } from "./../routes/__root";
 import { Route as PublicImport } from "./../routes/_public";
 import { Route as ProtectedImport } from "./../routes/_protected";
-import { Route as IndexImport } from "./../routes/index";
-import { Route as PublicSignInIndexImport } from "./../routes/_public/sign-in/index";
+import { Route as ProtectedIndexImport } from "./../routes/_protected/index";
+import { Route as PublicSignInRouteImport } from "./../routes/_public/sign-in/route";
 import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
 import { Route as ProtectedMapIndexImport } from "./../routes/_protected/map/index";
 import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
@@ -31,13 +31,13 @@ const ProtectedRoute = ProtectedImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const IndexRoute = IndexImport.update({
+const ProtectedIndexRoute = ProtectedIndexImport.update({
   path: "/",
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRoute,
 } as any);
 
-const PublicSignInIndexRoute = PublicSignInIndexImport.update({
-  path: "/sign-in/",
+const PublicSignInRouteRoute = PublicSignInRouteImport.update({
+  path: "/sign-in",
   getParentRoute: () => PublicRoute,
 } as any);
 
@@ -60,13 +60,6 @@ const ProtectedHubIndexRoute = ProtectedHubIndexImport.update({
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
     "/_protected": {
       id: "/_protected";
       path: "";
@@ -80,6 +73,20 @@ declare module "@tanstack/react-router" {
       fullPath: "";
       preLoaderRoute: typeof PublicImport;
       parentRoute: typeof rootRoute;
+    };
+    "/_public/sign-in": {
+      id: "/_public/sign-in";
+      path: "/sign-in";
+      fullPath: "/sign-in";
+      preLoaderRoute: typeof PublicSignInRouteImport;
+      parentRoute: typeof PublicImport;
+    };
+    "/_protected/": {
+      id: "/_protected/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof ProtectedIndexImport;
+      parentRoute: typeof ProtectedImport;
     };
     "/_protected/hub/": {
       id: "/_protected/hub/";
@@ -102,26 +109,19 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProtectedViewIndexImport;
       parentRoute: typeof ProtectedImport;
     };
-    "/_public/sign-in/": {
-      id: "/_public/sign-in/";
-      path: "/sign-in";
-      fullPath: "/sign-in";
-      preLoaderRoute: typeof PublicSignInIndexImport;
-      parentRoute: typeof PublicImport;
-    };
   }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexRoute,
   ProtectedRoute: ProtectedRoute.addChildren({
+    ProtectedIndexRoute,
     ProtectedHubIndexRoute,
     ProtectedMapIndexRoute,
     ProtectedViewIndexRoute,
   }),
-  PublicRoute: PublicRoute.addChildren({ PublicSignInIndexRoute }),
+  PublicRoute: PublicRoute.addChildren({ PublicSignInRouteRoute }),
 });
 
 /* prettier-ignore-end */
@@ -132,17 +132,14 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/_protected",
         "/_public"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
-    },
     "/_protected": {
       "filePath": "_protected.tsx",
       "children": [
+        "/_protected/",
         "/_protected/hub/",
         "/_protected/map/",
         "/_protected/view/"
@@ -151,8 +148,16 @@ export const routeTree = rootRoute.addChildren({
     "/_public": {
       "filePath": "_public.tsx",
       "children": [
-        "/_public/sign-in/"
+        "/_public/sign-in"
       ]
+    },
+    "/_public/sign-in": {
+      "filePath": "_public/sign-in/route.tsx",
+      "parent": "/_public"
+    },
+    "/_protected/": {
+      "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
     },
     "/_protected/hub/": {
       "filePath": "_protected/hub/index.tsx",
@@ -165,10 +170,6 @@ export const routeTree = rootRoute.addChildren({
     "/_protected/view/": {
       "filePath": "_protected/view/index.tsx",
       "parent": "/_protected"
-    },
-    "/_public/sign-in/": {
-      "filePath": "_public/sign-in/index.tsx",
-      "parent": "/_public"
     }
   }
 }

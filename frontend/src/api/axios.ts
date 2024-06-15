@@ -11,6 +11,8 @@ export const authTokensSchema = z.object({
   access: z.string(),
 });
 
+export type AuthTokens = z.infer<typeof authTokensSchema>;
+
 // 1. Create an axios instance that you wish to apply the interceptor to
 export const axiosInstance = axios.create({ baseURL: BASE_URL });
 
@@ -21,19 +23,27 @@ const requestRefresh: TokenRefreshRequest = async (
   // Important! Do NOT use the axios instance that you supplied to applyAuthTokenInterceptor (in our case 'axiosInstance')
   // because this will result in an infinite loop when trying to refresh the token.
   // Use the global axios client or a different instance
-  const response = await axios.post(`${BASE_URL}/auth/token/refresh/`, { token: refreshToken });
+  const response = await axios.post(`${BASE_URL}/auth/token/refresh/`, { refresh: refreshToken });
 
-  const tokens = await authTokensSchema.parseAsync(response.data);
+  // const tokens = await authTokensSchema.parseAsync(response.data);
 
   //   If your backend supports rotating refresh tokens, you may also choose to return an object containing both tokens:
-  return {
-    accessToken: tokens.access,
-    refreshToken: tokens.refresh,
-  };
+  // return {
+  //   accessToken: tokens.access,
+  //   refreshToken: tokens.refresh,
+  // };
+
+  const tokens = await authTokensSchema.omit({ refresh: true }).parseAsync(response.data);
+
+  return tokens.access;
 };
 
 // 3. Add interceptor to your axios instance
-applyAuthTokenInterceptor(axiosInstance, { requestRefresh });
+applyAuthTokenInterceptor(axiosInstance, {
+  requestRefresh,
+  header: "Authorization", // header name
+  headerPrefix: "Bearer ", // header value prefix
+});
 
 // New to 2.2.0+: initialize with storage: localStorage/sessionStorage/nativeStorage. Helpers: getBrowserLocalStorage, getBrowserSessionStorage
 const getStorage = getBrowserLocalStorage;
