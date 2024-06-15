@@ -30,7 +30,7 @@ function SignInComponent() {
 
       <div className="relative hidden h-full flex-col bg-muted p-10 text-muted-foreground dark:border-r lg:flex">
         <div className="absolute inset-0 bg-muted" />
-        <div className="relative z-20 flex select-none items-center gap-4 text-lg font-semibold text-foreground">
+        <div className="relative z-20 flex select-none items-center gap-4 text-lg font-semibold text-primary">
           <Icons.Logo />
           {appConfig.name}
         </div>

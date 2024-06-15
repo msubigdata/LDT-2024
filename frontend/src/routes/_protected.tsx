@@ -3,6 +3,7 @@ import { Settings } from "lucide-react";
 
 import Logo from "@/assets/logo.svg?react";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { appConfig } from "@/constants/app-config";
 
 export const Route = createFileRoute("/_protected")({
@@ -26,24 +27,25 @@ function SideBar() {
     <aside className="border-r bg-card">
       <Link to="/" className="flex h-20 select-none items-center justify-center gap-2.5 px-4">
         <Logo className="size-10" />
-        <span className="font-bold">{appConfig.name}</span>
+        <span className="font-semibold text-[#009FE3]">{appConfig.name}</span>
       </Link>
 
-      <nav className="mt-4 w-64">
-        <ul className="flex w-full flex-col">
-          {appConfig.navLinks.map((m) => (
-            <li key={m.to}>
-              <Link
-                className="flex w-full items-center justify-between gap-4 border-l-2 px-4 py-3 font-semibold text-muted-foreground transition-colors hover:text-foreground"
-                to={m.to}
-                activeProps={{ className: "bg-secondary/50 !text-foreground border-l-primary" }}
-              >
-                {m.title}
-                <m.Icon size={20} strokeWidth={2} />
-              </Link>
-            </li>
+      <Separator />
+
+      <nav className="mt-4 w-64 flex-1">
+        <nav className="grid items-start gap-y-2 px-2 text-sm font-medium">
+          {appConfig.navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              activeProps={{ className: "bg-muted hover:text-muted-foreground" }}
+            >
+              {link.title}
+              <link.Icon className="size-4" />
+            </Link>
           ))}
-        </ul>
+        </nav>
       </nav>
     </aside>
   );
