@@ -1,7 +1,7 @@
 # Create your views here.
 from rest_framework import generics
 
-from backend.location.serializers import (
+from location.serializers import (
     CameraSerializer,
     FileSerializer,
     LocationSerializer,
