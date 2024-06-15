@@ -1,38 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getRefreshToken } from "axios-jwt";
+import { AxiosError } from "axios";
+import { getAccessToken, getRefreshToken } from "axios-jwt";
 
 import { authRequests } from "@/api/auth";
 
 const request = authRequests.checkAuth;
 
+// НЕ ИСПОЛЬЗУЕТСЯ
 export const useCheckAuth = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
-  useSuspenseQuery({
+  const { isSuccess, isError } = useSuspenseQuery({
     queryKey: request.key,
     queryFn: async () => {
+      const token = await getAccessToken();
       const refresh = await getRefreshToken();
 
-      try {
-        if (!refresh) {
-          setAuthenticated(false);
-          throw new Error("No refresh token found");
-        }
-
-        return request.fn({ refresh }).then((res) => {
-          setAuthenticated(true);
-          return { username: res };
-        });
-      } catch (error) {
-        console.error("Не удалось проверить токен");
-        // throw error;
-
+      if (!refresh) {
+        setAuthenticated(false);
         return null;
       }
+
+      return request.fn({ refresh, token });
+    },
+    retry: (failureCount, error) => {
+      if (error instanceof Error && error.message === "No refresh token found") {
+        return false;
+      }
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 3;
     },
   });
 
-  return { authenticated };
+  useEffect(() => {
+    if (isError) {
+      setAuthenticated(false);
+    }
+  }, [isError, setAuthenticated]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setAuthenticated(true);
+    }
+  }, [isSuccess, setAuthenticated]);
+
+  return { authenticated, setAuthenticated };
 };

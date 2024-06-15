@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion -- ignore assertion */
+import { Suspense } from "react";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, ErrorComponent, RouterProvider } from "@tanstack/react-router";
 import { ZodError } from "zod";
 
+import { PageLoader } from "./components/modules/page-loader";
 import { AuthProvider, useAuthContext } from "./components/providers/auth";
 import { routeTree } from "./generated/routes";
 
@@ -47,9 +50,11 @@ function InnerApp() {
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <InnerApp />
-      </AuthProvider>
+      <Suspense fallback={<PageLoader />}>
+        <AuthProvider>
+          <InnerApp />
+        </AuthProvider>
+      </Suspense>
     </QueryClientProvider>
   );
 }
