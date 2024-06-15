@@ -6,9 +6,8 @@ export const Route = createFileRoute("/_public")({
 
 function PublicLayoutComponent() {
   return (
-    <div>
-      <h1>Публичный Layout</h1>
+    <main className="h-full">
       <Outlet />
-    </div>
+    </main>
   );
 }

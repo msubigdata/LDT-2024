@@ -1,4 +1,4 @@
-import { FilmIcon, MapIcon, VideoIcon } from "lucide-react";
+import { FileVideoIcon, MapIcon, VideoIcon } from "lucide-react";
 
 const MODULES = [
   {
@@ -7,14 +7,14 @@ const MODULES = [
     Icon: VideoIcon,
   },
   {
-    to: "/hub",
-    title: "Файлы",
-    Icon: FilmIcon,
-  },
-  {
     to: "/map",
     title: "Карта",
     Icon: MapIcon,
+  },
+  {
+    to: "/hub",
+    title: "Файлы",
+    Icon: FileVideoIcon,
   },
 ];
 
