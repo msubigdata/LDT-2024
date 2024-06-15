@@ -1,21 +1,15 @@
 import { type QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 
+import { type AuthContext } from "@/components/providers/auth";
 import { NotFoundComponent } from "@/components/templates/not-fount";
 
-export interface Auth {
-  login: (username: string) => void;
-  logout: () => void;
-  status: "loggedOut" | "loggedIn";
-  username?: string;
-}
-
 export interface RouterContext {
-  auth: Auth;
+  auth: AuthContext;
   queryClient: QueryClient;
 }
 
-export const Route = createRootRouteWithContext()({
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => <Outlet />,
   notFoundComponent: () => <NotFoundComponent />,
 });

@@ -37,7 +37,7 @@ function SignInComponent() {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="max-w-xl text-lg">
-              Сервис для мониторинга воздушного пространства&nbsp;аэропортов
+              Система мониторинга воздушного пространства&nbsp;аэропортов
               и&nbsp;детекции&nbsp;воздушных&nbsp;объектов
             </p>
             <footer className="text-sm">ООО &ldquo;БигДата&rdquo;</footer>
