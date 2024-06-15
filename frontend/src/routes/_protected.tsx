@@ -6,7 +6,6 @@ import { ProtectedLayout } from "@/components/layouts/protected-layout";
 
 export const Route = createFileRoute("/_protected")({
   beforeLoad: ({ context, location }) => {
-    console.log(context.auth, "- protected layout");
     if (!context.auth.authenticated) {
       throw redirect({
         to: "/sign-in",
