@@ -14,7 +14,6 @@ import { type UserAuth, type UserInfo } from "@/types/auth";
 import type { UseMutationResult } from "@tanstack/react-query";
 
 export interface AuthContext {
-  login: (data: UserAuth) => Promise<void>;
   logout: () => Promise<void>;
   authenticated: boolean;
   user?: UserInfo;
