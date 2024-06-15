@@ -16,6 +16,7 @@ import { Route as ProtectedImport } from "./../routes/_protected";
 import { Route as IndexImport } from "./../routes/index";
 import { Route as PublicSignInIndexImport } from "./../routes/_public/sign-in/index";
 import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
+import { Route as ProtectedMapIndexImport } from "./../routes/_protected/map/index";
 import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
 
 // Create/Update Routes
@@ -42,6 +43,11 @@ const PublicSignInIndexRoute = PublicSignInIndexImport.update({
 
 const ProtectedViewIndexRoute = ProtectedViewIndexImport.update({
   path: "/view/",
+  getParentRoute: () => ProtectedRoute,
+} as any);
+
+const ProtectedMapIndexRoute = ProtectedMapIndexImport.update({
+  path: "/map/",
   getParentRoute: () => ProtectedRoute,
 } as any);
 
@@ -82,6 +88,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProtectedHubIndexImport;
       parentRoute: typeof ProtectedImport;
     };
+    "/_protected/map/": {
+      id: "/_protected/map/";
+      path: "/map";
+      fullPath: "/map";
+      preLoaderRoute: typeof ProtectedMapIndexImport;
+      parentRoute: typeof ProtectedImport;
+    };
     "/_protected/view/": {
       id: "/_protected/view/";
       path: "/view";
@@ -105,6 +118,7 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   ProtectedRoute: ProtectedRoute.addChildren({
     ProtectedHubIndexRoute,
+    ProtectedMapIndexRoute,
     ProtectedViewIndexRoute,
   }),
   PublicRoute: PublicRoute.addChildren({ PublicSignInIndexRoute }),
@@ -130,6 +144,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/hub/",
+        "/_protected/map/",
         "/_protected/view/"
       ]
     },
@@ -141,6 +156,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/hub/": {
       "filePath": "_protected/hub/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/map/": {
+      "filePath": "_protected/map/index.tsx",
       "parent": "/_protected"
     },
     "/_protected/view/": {
