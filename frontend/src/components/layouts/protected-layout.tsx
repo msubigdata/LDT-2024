@@ -1,11 +1,14 @@
 import { getRouteApi, Link, Outlet, useLocation, useRouter } from "@tanstack/react-router";
-import { Settings } from "lucide-react";
+import { PlusCircleIcon, Settings } from "lucide-react";
+import { useToggle } from "usehooks-ts";
 
 import { appConfig } from "@/constants/app-config";
 
 import { Icons } from "../modules/icons";
 import { useAuthContext } from "../providers/auth";
+import { Button } from "../ui/button";
 import { DropdownMenu } from "../ui/dropdown-menu";
+import { UploadDialog } from "./upload-dialog";
 
 const routeApi = getRouteApi("/_protected");
 
@@ -53,6 +56,7 @@ function SideBar() {
 }
 
 function AppBar() {
+  const [openUploadDialog, toggleUploadDialog] = useToggle(false);
   const { logout, user } = useAuthContext();
   const router = useRouter();
   const navigate = routeApi.useNavigate();
@@ -71,20 +75,33 @@ function AppBar() {
 
   return (
     <div className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b px-4">
-      <div>{appConfig.navLinks.find((link) => link.to === pathname)?.title}</div>
-      <DropdownMenu>
-        <DropdownMenu.Trigger className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Settings className="size-5" />
-          <span>Настройки</span>
-        </DropdownMenu.Trigger>
+      <div>{appConfig.navLinks.find((link) => link.to === pathname)?.title} </div>
 
-        <DropdownMenu.Content side="bottom" align="end" sideOffset={10}>
-          <DropdownMenu.Label>{name}</DropdownMenu.Label>
-          <DropdownMenu.Separator />
+      <div className="flex items-center gap-6">
+        <Button
+          size="sm"
+          onClick={() => {
+            toggleUploadDialog();
+          }}
+        >
+          <PlusCircleIcon className="mr-2 size-4" /> Добавить материал
+        </Button>
+        <DropdownMenu>
+          <DropdownMenu.Trigger className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Settings className="size-5" />
+            <span>Настройки</span>
+          </DropdownMenu.Trigger>
 
-          <DropdownMenu.Item onClick={handleLogout}>Выйти</DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu>
+          <DropdownMenu.Content side="bottom" align="end" sideOffset={10}>
+            <DropdownMenu.Label>{name}</DropdownMenu.Label>
+            <DropdownMenu.Separator />
+
+            <DropdownMenu.Item onClick={handleLogout}>Выйти</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu>
+      </div>
+
+      <UploadDialog open={openUploadDialog} onClose={toggleUploadDialog} />
     </div>
   );
 }
