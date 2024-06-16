@@ -129,6 +129,10 @@ function CameraListElement({
               buttonVariants({ variant: "link" }),
               "justify-start text-sm text-foreground",
             )}
+            to="/map/$map-id"
+            params={{
+              "map-id": f.id.toString(),
+            }}
             key={f.id}
           >
             {f.title}

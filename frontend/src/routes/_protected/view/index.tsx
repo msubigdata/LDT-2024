@@ -46,7 +46,7 @@ function ViewComponent() {
   );
 
   return (
-    <div className="flex h-full gap-6 overflow-hidden">
+    <div className="flex h-full gap-4 overflow-hidden">
       <div className="flex w-72 flex-col gap-3 border-r py-4 pr-4">
         <LocationSearch search={search} setSearch={setSearch} />
 
@@ -67,7 +67,7 @@ function ViewComponent() {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center overflow-y-auto">
+      <div className="flex flex-1 items-center justify-center overflow-y-auto py-4">
         {selectedFile ? <Player /> : <div>Выберите файл для просмотра</div>}
       </div>
     </div>

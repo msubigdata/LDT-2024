@@ -1,7 +1,7 @@
 /* eslint-disable camelcase -- ignore cases */
 
 import { createFileRoute } from "@tanstack/react-router";
-import { VideoIcon } from "lucide-react";
+import { FileImageIcon, VideoIcon } from "lucide-react";
 
 import { useCams } from "@/hooks/camera";
 import { useFiles } from "@/hooks/file";
@@ -34,7 +34,7 @@ function FileComponent({ file }: FileComponentProps) {
   return (
     <div className="relative flex h-64 flex-col justify-end gap-4 rounded-md bg-secondary p-4 text-card-foreground">
       <div className="flex size-full items-center justify-center rounded-md bg-border text-muted-foreground">
-        <VideoIcon />
+        {file.content === "photo" ? <FileImageIcon /> : <VideoIcon />}
       </div>
 
       <div className="z-10 flex flex-col gap-2">

@@ -13,13 +13,31 @@ function cutSubstring(url: string) {
   return trimmedUrl;
 }
 
+// const validateData = (data: any) => {
+//   try {
+//     z.any().parse(data);
+//     console.log("Validation successful:", data);
+//   } catch (e) {
+//     if (e instanceof z.ZodError) {
+//       console.error("Validation errors:", e.errors);
+//     } else {
+//       console.error("Unexpected error:", e);
+//     }
+//   }
+// };
+
 export const fileRequests = {
   getFiles: {
     key: ["GET_FILES"],
     fn: () =>
+      axiosInstance.get(`/location/file/`).then(({ data }) => fileSchema.array().parseAsync(data)),
+  },
+  retrieveFile: {
+    key: ["RETRIEVE_FILE"],
+    fn: (fileId: string) =>
       axiosInstance
-        .get(`/location/file/`)
-        .then(({ data }) => fileSchema.array().optional().parse(data)),
+        .get(`/location/file/${fileId}/`)
+        .then(({ data }) => fileSchema.parseAsync(data)),
   },
   uploadFile: {
     key: ["UPLOAD_FILE"],

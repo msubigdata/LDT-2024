@@ -18,6 +18,7 @@ import { Route as PublicSignInRouteImport } from "./../routes/_public/sign-in/ro
 import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
 import { Route as ProtectedMapIndexImport } from "./../routes/_protected/map/index";
 import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
+import { Route as ProtectedMapFileIdImport } from "./../routes/_protected/map/$file-id";
 
 // Create/Update Routes
 
@@ -56,6 +57,11 @@ const ProtectedHubIndexRoute = ProtectedHubIndexImport.update({
   getParentRoute: () => ProtectedRoute,
 } as any);
 
+const ProtectedMapFileIdRoute = ProtectedMapFileIdImport.update({
+  path: "/map/$file-id",
+  getParentRoute: () => ProtectedRoute,
+} as any);
+
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
@@ -88,6 +94,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProtectedIndexImport;
       parentRoute: typeof ProtectedImport;
     };
+    "/_protected/map/$file-id": {
+      id: "/_protected/map/$file-id";
+      path: "/map/$file-id";
+      fullPath: "/map/$file-id";
+      preLoaderRoute: typeof ProtectedMapFileIdImport;
+      parentRoute: typeof ProtectedImport;
+    };
     "/_protected/hub/": {
       id: "/_protected/hub/";
       path: "/hub";
@@ -117,6 +130,7 @@ declare module "@tanstack/react-router" {
 export const routeTree = rootRoute.addChildren({
   ProtectedRoute: ProtectedRoute.addChildren({
     ProtectedIndexRoute,
+    ProtectedMapFileIdRoute,
     ProtectedHubIndexRoute,
     ProtectedMapIndexRoute,
     ProtectedViewIndexRoute,
@@ -140,6 +154,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/",
+        "/_protected/map/$file-id",
         "/_protected/hub/",
         "/_protected/map/",
         "/_protected/view/"
@@ -157,6 +172,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_protected/": {
       "filePath": "_protected/index.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/map/$file-id": {
+      "filePath": "_protected/map/$file-id.tsx",
       "parent": "/_protected"
     },
     "/_protected/hub/": {

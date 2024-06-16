@@ -4,6 +4,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { isLoggedIn } from "axios-jwt";
 
 import { ProtectedLayout } from "@/components/layouts/protected-layout";
+import { PageLoader } from "@/components/modules/page-loader";
 
 export const Route = createFileRoute("/_protected")({
   beforeLoad: async ({ context, location }) => {
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/_protected")({
     }
   },
   component: () => <ProtectedLayoutComponent />,
+  loader: () => <PageLoader />,
 });
 
 function ProtectedLayoutComponent() {

@@ -89,7 +89,7 @@ export function Player() {
   }
 
   return (
-    <div className="size-full flex-1 pb-10 pt-3" ref={containerRef}>
+    <div className="size-full flex-1 pb-10" ref={containerRef}>
       {videoData ? (
         <>
           {/* <h1 className="text-2xl font-bold">{videoData.title}</h1>
