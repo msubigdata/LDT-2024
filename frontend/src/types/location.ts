@@ -5,4 +5,4 @@ export const locationSchema = z.object({
   title: z.string(),
 });
 
-export type Location = z.infer<typeof locationSchema>;
+export type LocationType = z.infer<typeof locationSchema>;

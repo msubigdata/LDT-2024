@@ -7,7 +7,7 @@ export const fileRequests = {
     key: ["GET_FILES"],
     fn: () =>
       axiosInstance
-        .get(`/api/location/file/`)
+        .get(`/location/file/`)
         .then(({ data }) => fileSchema.array().optional().parse(data)),
   },
 };

@@ -7,4 +7,4 @@ export const fileSchema = z.object({
   camera: z.number(),
 });
 
-export type File = z.infer<typeof fileSchema>;
+export type FileType = z.infer<typeof fileSchema>;

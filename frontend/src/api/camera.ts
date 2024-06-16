@@ -7,7 +7,7 @@ export const cameraRequests = {
     key: ["GET_CAMERAS"],
     fn: () =>
       axiosInstance
-        .get(`/api/location/camera/`)
+        .get(`/location/camera/`)
         .then(({ data }) => cameraSchema.array().optional().parse(data)),
   },
 };

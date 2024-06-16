@@ -7,7 +7,7 @@ export const locationRequests = {
     key: ["GET_LOCATIONS"],
     fn: () =>
       axiosInstance
-        .get(`/api/location/location/`)
+        .get(`/location/location/`)
         .then(({ data }) => locationSchema.array().optional().parse(data)),
   },
 };

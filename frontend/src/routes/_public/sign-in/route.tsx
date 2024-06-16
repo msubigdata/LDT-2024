@@ -151,7 +151,6 @@ function SignInComponent() {
               Система мониторинга воздушного пространства&nbsp;аэропортов
               и&nbsp;детекции&nbsp;воздушных&nbsp;объектов
             </p>
-            <footer className="text-sm">ООО &ldquo;БигДата&rdquo;</footer>
           </blockquote>
         </div>
       </div>
