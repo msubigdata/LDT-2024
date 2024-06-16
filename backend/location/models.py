@@ -44,6 +44,7 @@ class File(models.Model):
     content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
     markdown = models.JSONField(default={}, null=True, blank=True, verbose_name="Markdown")
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
 
     chunked_upload: Union["FileUploadChunked", models.Manager]
 

@@ -27,4 +27,4 @@ class CameraAdmin(admin.ModelAdmin):
 class FileAdmin(admin.ModelAdmin):
     list_display = ("title", "camera", "created_date")
     search_fields = ("title",)
-    list_filter = ("created_date", "content")
+    list_filter = ("created_date", "content",)

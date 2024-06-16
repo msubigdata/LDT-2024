@@ -14,6 +14,7 @@ import { type UserAuth, type UserInfo } from "@/types/auth";
 import type { UseMutationResult } from "@tanstack/react-query";
 
 export interface AuthContext {
+  login: (data: UserAuth) => Promise<void>;
   logout: () => Promise<void>;
   authenticated: boolean;
   user?: UserInfo;
@@ -25,7 +26,6 @@ export const AuthContext = createContext<AuthContext | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState(false);
 
-  // возможно, тут есть некоторые проблемы
   useQuery({
     queryKey: authRequests.checkAuth.key,
     queryFn: async () => {
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!refresh) {
         setAuthenticated(false);
-        return null;
+        throw new Error("No refresh token found");
       }
 
       return authRequests.checkAuth
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(
     async (data: UserAuth) => {
-      await loginMutation.mutateAsync(data).then(async (tokens) => {
+      return loginMutation.mutateAsync(data).then(async (tokens) => {
         if (tokens) {
           await setAuthTokens({
             accessToken: tokens.access,
