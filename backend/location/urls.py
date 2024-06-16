@@ -18,6 +18,10 @@ urlpatterns = [
     path("file/<int:pk>/", FileRUDView.as_view(), name="files"),
     path("file/", FileLCView.as_view(), name="file"),
     path("file/upload/", FileUploadChunkedView.as_view(), name="upload_data"),
-    path("file/upload/<str:pk>/", FileUploadChunkedView.as_view(), name="upload_details"),
-    path("file/upload/complete/", FileUploadChunkedView.as_view(), name="upload_compete"),
+    path(
+        "file/upload/<str:pk>/", FileUploadChunkedView.as_view(), name="upload_details"
+    ),
+    path(
+        "file/upload/complete/", FileUploadChunkedView.as_view(), name="upload_compete"
+    ),
 ]
