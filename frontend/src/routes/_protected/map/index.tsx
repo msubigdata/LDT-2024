@@ -48,7 +48,7 @@ function MapRouteComponent() {
             <CameraListElement
               key={cam.id}
               cam={cam}
-              filesCount={filesList ? filesList.length : 0}
+              filesCount={filesList?.filter((f) => f.camera === cam.id).length ?? 0}
               search={search}
               selectedCamera={selectedCamera}
               setSelectedCamera={setSelectedCamera}
@@ -117,7 +117,7 @@ function CameraListElement({
         </div>
 
         <div className="text-xs">
-          {filesCount} {plural(filesCount, ["файл", "файлов", "файла"])}
+          {filesCount} {plural(filesCount, ["файл", "файла", "файлов"])}
         </div>
       </Collapsible.Trigger>
 

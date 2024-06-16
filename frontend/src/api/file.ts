@@ -25,7 +25,7 @@ export const fileRequests = {
     key: ["UPLOAD_FILE"],
     fn: async (file?: File, cameraId?: string) => {
       if (!file || !cameraId) return;
-      const toastLoader = toast(`Идет загрузка файла.. 0`);
+      const toastLoader = toast.loading(`Идет загрузка файла.. 0`);
 
       let uploadProgress = 0;
 

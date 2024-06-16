@@ -1,5 +1,6 @@
-
+/* eslint-disable tailwindcss/no-custom-classname -- use for grouping */
 import { Toaster as Sonner } from "sonner";
+
 import { useTheme } from "../providers/theme";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;

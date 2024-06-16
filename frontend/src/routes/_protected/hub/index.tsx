@@ -1,4 +1,5 @@
 /* eslint-disable camelcase -- ignore cases */
+
 import { createFileRoute } from "@tanstack/react-router";
 import { VideoIcon } from "lucide-react";
 
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/_protected/hub/")({
 
 function HubComponent() {
   const { filesList } = useFiles();
+
   return (
     <div className="grid flex-1 grid-cols-4 gap-3 py-4">
       {filesList?.map((f) => <FileComponent key={f.id} file={f} />)}
@@ -36,9 +38,9 @@ function FileComponent({ file }: FileComponentProps) {
       </div>
 
       <div className="z-10 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-sm">{title}</span>
-          <span className="text-sm">{cameraTitle}</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="max-w-[200px] truncate text-sm">{title}</div>
+          <div className="truncate text-sm">{cameraTitle}</div>
         </div>
         <span className="text-xs">Добавлено: {formatDateTime(created_date)}</span>
       </div>
