@@ -15,7 +15,7 @@ export function ProtectedLayout() {
       <SideBar />
       <section className="flex flex-1 flex-col">
         <AppBar />
-        <div className="container flex-1">
+        <div className="container flex-1 overflow-y-auto">
           <Outlet />
         </div>
       </section>
@@ -25,7 +25,7 @@ export function ProtectedLayout() {
 
 function SideBar() {
   return (
-    <aside className="border-r bg-card">
+    <aside className="shrink-0 border-r bg-card">
       <div className="flex h-14 flex-col justify-center border-b">
         <Link to="/" className="flex select-none items-center justify-center gap-2.5 px-4">
           <Icons.Logo className="size-6" />
@@ -70,7 +70,7 @@ function AppBar() {
   const name = `${user?.first_name} ${user?.last_name}`;
 
   return (
-    <div className="flex h-14 w-full items-center justify-between gap-4 border-b px-4">
+    <div className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b px-4">
       <div>{appConfig.navLinks.find((link) => link.to === pathname)?.title}</div>
       <DropdownMenu>
         <DropdownMenu.Trigger className="flex items-center gap-2 text-sm text-muted-foreground">
