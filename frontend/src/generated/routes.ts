@@ -18,7 +18,8 @@ import { Route as PublicSignInRouteImport } from "./../routes/_public/sign-in/ro
 import { Route as ProtectedViewIndexImport } from "./../routes/_protected/view/index";
 import { Route as ProtectedMapIndexImport } from "./../routes/_protected/map/index";
 import { Route as ProtectedHubIndexImport } from "./../routes/_protected/hub/index";
-import { Route as ProtectedMapFileIdImport } from "./../routes/_protected/map/$file-id";
+import { Route as ProtectedMapFileImport } from "./../routes/_protected/map/$file";
+import { Route as ProtectedHubFileImport } from "./../routes/_protected/hub/$file";
 
 // Create/Update Routes
 
@@ -57,8 +58,13 @@ const ProtectedHubIndexRoute = ProtectedHubIndexImport.update({
   getParentRoute: () => ProtectedRoute,
 } as any);
 
-const ProtectedMapFileIdRoute = ProtectedMapFileIdImport.update({
-  path: "/map/$file-id",
+const ProtectedMapFileRoute = ProtectedMapFileImport.update({
+  path: "/map/$file",
+  getParentRoute: () => ProtectedRoute,
+} as any);
+
+const ProtectedHubFileRoute = ProtectedHubFileImport.update({
+  path: "/hub/$file",
   getParentRoute: () => ProtectedRoute,
 } as any);
 
@@ -94,11 +100,18 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProtectedIndexImport;
       parentRoute: typeof ProtectedImport;
     };
-    "/_protected/map/$file-id": {
-      id: "/_protected/map/$file-id";
-      path: "/map/$file-id";
-      fullPath: "/map/$file-id";
-      preLoaderRoute: typeof ProtectedMapFileIdImport;
+    "/_protected/hub/$file": {
+      id: "/_protected/hub/$file";
+      path: "/hub/$file";
+      fullPath: "/hub/$file";
+      preLoaderRoute: typeof ProtectedHubFileImport;
+      parentRoute: typeof ProtectedImport;
+    };
+    "/_protected/map/$file": {
+      id: "/_protected/map/$file";
+      path: "/map/$file";
+      fullPath: "/map/$file";
+      preLoaderRoute: typeof ProtectedMapFileImport;
       parentRoute: typeof ProtectedImport;
     };
     "/_protected/hub/": {
@@ -130,7 +143,8 @@ declare module "@tanstack/react-router" {
 export const routeTree = rootRoute.addChildren({
   ProtectedRoute: ProtectedRoute.addChildren({
     ProtectedIndexRoute,
-    ProtectedMapFileIdRoute,
+    ProtectedHubFileRoute,
+    ProtectedMapFileRoute,
     ProtectedHubIndexRoute,
     ProtectedMapIndexRoute,
     ProtectedViewIndexRoute,
@@ -154,7 +168,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/",
-        "/_protected/map/$file-id",
+        "/_protected/hub/$file",
+        "/_protected/map/$file",
         "/_protected/hub/",
         "/_protected/map/",
         "/_protected/view/"
@@ -174,8 +189,12 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_protected/index.tsx",
       "parent": "/_protected"
     },
-    "/_protected/map/$file-id": {
-      "filePath": "_protected/map/$file-id.tsx",
+    "/_protected/hub/$file": {
+      "filePath": "_protected/hub/$file.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/map/$file": {
+      "filePath": "_protected/map/$file.tsx",
       "parent": "/_protected"
     },
     "/_protected/hub/": {

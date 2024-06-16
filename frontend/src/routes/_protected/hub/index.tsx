@@ -1,6 +1,6 @@
 /* eslint-disable camelcase -- ignore cases */
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileImageIcon, VideoIcon } from "lucide-react";
 
 import { useCams } from "@/hooks/camera";
@@ -32,7 +32,13 @@ function FileComponent({ file }: FileComponentProps) {
   const cameraTitle = camsList?.find((c) => c.id === camera)?.title;
 
   return (
-    <div className="relative flex h-64 flex-col justify-end gap-4 rounded-md bg-secondary p-4 text-card-foreground">
+    <Link
+      to="/hub/$file"
+      params={{
+        file: file.id.toString(),
+      }}
+      className="relative flex h-64 flex-col justify-end gap-4 rounded-md bg-secondary p-4 text-card-foreground"
+    >
       <div className="flex size-full items-center justify-center rounded-md bg-border text-muted-foreground">
         {file.content === "photo" ? <FileImageIcon /> : <VideoIcon />}
       </div>
@@ -44,6 +50,6 @@ function FileComponent({ file }: FileComponentProps) {
         </div>
         <span className="text-xs">Добавлено: {formatDateTime(created_date)}</span>
       </div>
-    </div>
+    </Link>
   );
 }

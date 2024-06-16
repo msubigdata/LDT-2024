@@ -122,16 +122,16 @@ function CameraListElement({
         </div>
       </Collapsible.Trigger>
 
-      <Collapsible.Content className="flex flex-col gap-3 pt-1">
+      <Collapsible.Content className="flex flex-col pt-1">
         {files?.map((f) => (
           <Link
             className={cn(
               buttonVariants({ variant: "link" }),
               "justify-start text-sm text-foreground",
             )}
-            to="/map/$map-id"
+            to="/map/$file"
             params={{
-              "map-id": f.id.toString(),
+              file: f.id.toString(),
             }}
             key={f.id}
           >

@@ -126,7 +126,7 @@ function Location({
           {camsCount} {plural(camsCount, ["камера", "камеры", "камер"])}
         </div>
       </Collapsible.Trigger>
-      <Collapsible.Content className="flex flex-col gap-3 pt-1">
+      <Collapsible.Content className="flex flex-col pt-1">
         {files?.map((f) => (
           <CameraFile onFileSelect={onFileSelect} selectedFile={selectedFile} file={f} key={f.id} />
         ))}
