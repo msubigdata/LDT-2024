@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 
 import { LocationSearch } from "@/components/templates/location-search";
 import { Map } from "@/components/templates/map";
+import { buttonVariants } from "@/components/ui/button";
 import { Collapsible } from "@/components/ui/collapsible";
 import { useCams } from "@/hooks/camera";
 import { useFiles } from "@/hooks/file";
@@ -33,6 +34,11 @@ function MapRouteComponent() {
     loc.title.toLowerCase().includes(search.toLowerCase()),
   );
 
+  const activeCamera = useMemo(
+    () => camsList?.find((cam) => cam.id === selectedCamera),
+    [camsList, selectedCamera],
+  );
+
   return (
     <div className={cn("relative flex size-full overflow-hidden")}>
       <div className="flex w-72 flex-col gap-3 border-r py-4 pr-4">
@@ -43,7 +49,8 @@ function MapRouteComponent() {
               key={cam.id}
               cam={cam}
               filesCount={filesList ? filesList.length : 0}
-              search=""
+              search={search}
+              selectedCamera={selectedCamera}
               setSelectedCamera={setSelectedCamera}
               files={selectedFiles}
             />
@@ -52,7 +59,14 @@ function MapRouteComponent() {
       </div>
       <div className="relative size-full flex-1">
         <div className={cn("absolute z-20 h-[calc(100%+50px)] w-full")}>
-          <Map cams={camsList} />
+          <Map
+            cams={camsList}
+            aim={
+              activeCamera
+                ? [Number(activeCamera.latitude), Number(activeCamera.longitude)]
+                : undefined
+            }
+          />
         </div>
       </div>
     </div>
@@ -109,7 +123,13 @@ function CameraListElement({
 
       <Collapsible.Content className="flex flex-col gap-3 pt-1">
         {files?.map((f) => (
-          <Link className="justify-start text-sm" key={f.id}>
+          <Link
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              "justify-start text-sm text-foreground",
+            )}
+            key={f.id}
+          >
             {f.title}
           </Link>
         ))}

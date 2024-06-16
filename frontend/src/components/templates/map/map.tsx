@@ -1,9 +1,10 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
+import { Button } from "@/components/ui/button";
 import { type Camera } from "@/types";
 
 import type { LatLngExpression, Map as MapType } from "leaflet";
@@ -11,9 +12,12 @@ import type { RefObject } from "react";
 
 interface MapProps {
   cams?: Camera[];
+  aim?: LatLngExpression;
 }
 
-export function Map({ cams }: MapProps) {
+const defaultZoom = 15;
+
+export function Map({ cams, aim }: MapProps) {
   const mapRef = useRef<MapType>(null);
 
   const resizeMap = (map: RefObject<MapType>) => {
@@ -24,6 +28,12 @@ export function Map({ cams }: MapProps) {
     }
   };
 
+  useEffect(() => {
+    if (aim) {
+      mapRef.current?.flyTo(aim, defaultZoom, { duration: 2 });
+    }
+  }, [aim]);
+
   const centerByFirstPoint = useMemo<LatLngExpression>(() => [54.762796, 55.864275], []);
 
   // const maxBounds = useMemo<LatLngBoundsExpression>(() => [], []);
@@ -32,7 +42,7 @@ export function Map({ cams }: MapProps) {
     <MapContainer
       ref={mapRef}
       center={centerByFirstPoint}
-      zoom={15}
+      zoom={defaultZoom}
       maxZoom={18}
       scrollWheelZoom
       zoomControl={false}
@@ -49,7 +59,7 @@ export function Map({ cams }: MapProps) {
       {cams?.map((cam) => (
         <Marker position={[Number(cam.latitude), Number(cam.longitude)]} key={cam.id}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            <Button>{cam.title}</Button>
           </Popup>
         </Marker>
       ))}
