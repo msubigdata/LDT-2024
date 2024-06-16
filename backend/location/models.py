@@ -21,9 +21,22 @@ class Location(models.Model):
 
 class Camera(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название")
-    location = models.ForeignKey(Location, related_name="cameras", on_delete=models.CASCADE, verbose_name="Локация")
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Долгота")
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, verbose_name="Широта")
+    location = models.ForeignKey(
+        Location,
+        related_name="cameras",
+        on_delete=models.CASCADE,
+        verbose_name="Локация",
+    )
+    longitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="Долгота",
+    )
+    latitude = models.DecimalField(
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="Широта",
+    )
     files: Union["File", models.Manager]
 
     class Meta:
@@ -40,11 +53,29 @@ class File(models.Model):
         PHOTO = "photo", "Фото"
 
     title = models.CharField(max_length=255, verbose_name="Название")
-    camera = models.ForeignKey(Camera, related_name="files", on_delete=models.CASCADE, verbose_name="Камера")
-    content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
-    markdown = models.JSONField(default={}, null=True, blank=True, verbose_name="Markdown")
+    camera = models.ForeignKey(
+        Camera,
+        related_name="files",
+        on_delete=models.CASCADE,
+        verbose_name="Камера",
+    )
+    content = models.CharField(
+        max_length=10,
+        choices=TypeContent.choices,
+        verbose_name="Тип содержимого",
+    )
+    markdown = models.JSONField(
+        default={},
+        null=True,
+        blank=True,
+        verbose_name="Markdown",
+    )
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
+    content = models.CharField(
+        max_length=10,
+        choices=TypeContent.choices,
+        verbose_name="Тип содержимого",
+    )
 
     chunked_upload: Union["FileUploadChunked", models.Manager]
 

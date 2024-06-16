@@ -23,8 +23,14 @@ urlpatterns = [
     path("api/", include("api.urls")),
 ]
 
-urlpatterns += (re_path(r"^api/media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),)
-urlpatterns += (re_path(r"^api/static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),)
+urlpatterns += (
+    re_path(r"^api/media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
+)
+urlpatterns += (
+    re_path(
+        r"^api/static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}
+    ),
+)
 
 admin.site.site_header = f"{settings.PROJECT_NAME} Administration"
 admin.site.site_title = settings.PROJECT_NAME
