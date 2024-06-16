@@ -20,6 +20,7 @@ INSTALLED_APPS += [
     "drf_spectacular",
     "django_typomatic",
     "rest_framework_simplejwt",
+    "django_filters",
 ]
 
 FRONTEND_MODULES = [
@@ -78,6 +79,7 @@ else:
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "django_app.auth.CsrfExemptSessionAuthentication",
