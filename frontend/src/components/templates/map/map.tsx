@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
+import { PageLoader } from "@/components/modules/page-loader";
 import { Button } from "@/components/ui/button";
 import { type Camera } from "@/types";
 
@@ -13,12 +14,18 @@ import type { RefObject } from "react";
 interface MapProps {
   cams?: Camera[];
   aim?: LatLngExpression;
+  isLoading?: boolean;
 }
 
 const defaultZoom = 15;
 
-export function Map({ cams, aim }: MapProps) {
+export function Map({ cams, aim, isLoading }: MapProps) {
   const mapRef = useRef<MapType>(null);
+
+  const firstCamAsMapCenter = useMemo<LatLngExpression>(
+    () => (cams ? [Number(cams.at(0)?.latitude), Number(cams.at(0)?.longitude)] : [0, 0]),
+    [cams],
+  );
 
   const resizeMap = (map: RefObject<MapType>) => {
     const resizeObserver = new ResizeObserver(() => map.current?.invalidateSize());
@@ -34,14 +41,14 @@ export function Map({ cams, aim }: MapProps) {
     }
   }, [aim]);
 
-  const centerByFirstPoint = useMemo<LatLngExpression>(() => [54.762796, 55.864275], []);
-
-  // const maxBounds = useMemo<LatLngBoundsExpression>(() => [], []);
+  if (isLoading) {
+    return <PageLoader>Загрузка карты...</PageLoader>;
+  }
 
   return (
     <MapContainer
       ref={mapRef}
-      center={centerByFirstPoint}
+      center={firstCamAsMapCenter}
       zoom={defaultZoom}
       maxZoom={18}
       scrollWheelZoom

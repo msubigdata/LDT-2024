@@ -22,7 +22,7 @@ function MapRouteComponent() {
   const [search, setSearch] = useState("");
   const [selectedCamera, setSelectedCamera] = useState<number>();
 
-  const { camsList } = useCams();
+  const { camsList, isFetching: camsFetching } = useCams();
   const { filesList } = useFiles();
 
   const selectedFiles = useMemo(
@@ -60,6 +60,7 @@ function MapRouteComponent() {
       <div className="relative size-full flex-1">
         <div className={cn("absolute z-20 h-[calc(100%+50px)] w-full")}>
           <Map
+            isLoading={camsFetching}
             cams={camsList}
             aim={
               activeCamera
