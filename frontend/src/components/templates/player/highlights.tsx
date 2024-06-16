@@ -9,6 +9,18 @@ interface VideoHighlightsProps {
   highlights: Highlight[];
   onHighlightClick: (time: number) => void;
 }
+const convertToTimeFormat = (totalMinutes: number) => {
+  const totalSeconds = totalMinutes * 60;
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+
+  const paddedHours = String(hours).padStart(2, "0");
+  const paddedMinutes = String(minutes).padStart(2, "0");
+  const paddedSeconds = String(seconds).padStart(2, "0");
+
+  return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+};
 
 export function VideoHighlights({ highlights, onHighlightClick }: VideoHighlightsProps) {
   return (
@@ -27,7 +39,7 @@ export function VideoHighlights({ highlights, onHighlightClick }: VideoHighlight
             alt={highlight.description}
             className="h-32 w-full rounded-md object-cover"
           />
-          <p>{highlight.time}</p>
+          <p>{convertToTimeFormat(highlight.time)}</p>
         </button>
       ))}
     </div>
