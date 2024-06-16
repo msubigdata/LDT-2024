@@ -25,9 +25,9 @@ export function VideoHighlights({ highlights, onHighlightClick }: VideoHighlight
           <img
             src={highlight.previewUrl}
             alt={highlight.description}
-            className="h-32 w-full object-cover"
+            className="h-32 w-full rounded-md object-cover"
           />
-          <p>{highlight.description}</p>
+          <p>{highlight.time}</p>
         </button>
       ))}
     </div>

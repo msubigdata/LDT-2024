@@ -47,138 +47,6 @@ export function Player() {
           description: "Highlight at 10s",
           type: "threat",
         },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
-        {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
-        },
-        {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
-          type: "threat",
-        },
       ],
     };
 
@@ -230,7 +98,11 @@ export function Player() {
             onLoadedMetadata={handleLoadedMetadata}
           />
           <Timeline
-            events={videoData.highlights.map(({ time, type }) => ({ time, type }))}
+            events={videoData.highlights.map(({ time, type, previewUrl }) => ({
+              time,
+              type,
+              previewUrl,
+            }))}
             currentTime={currentTime}
             duration={duration}
             onEventClick={handleEventClick}
