@@ -38,7 +38,8 @@ function SignInComponent() {
   const search = Route.useSearch();
 
   const {
-    loginMutation: { mutateAsync: login, isPending: loginLoading, error },
+    loginMutation: { isPending: loginLoading, error },
+    login,
   } = useAuthContext();
 
   const form = useForm<UserAuth>({
@@ -50,10 +51,10 @@ function SignInComponent() {
   });
 
   const onSubmit = async (values: z.infer<typeof credentialsSchema>) => {
-    await login(values).then(async () => {
-      await router.invalidate();
-      return navigate({ to: search.redirect ?? fallback });
-    });
+    await login(values);
+
+    await router.invalidate();
+    await navigate({ to: search.redirect ?? fallback });
   };
 
   const isLoading = routeLoading || loginLoading;
