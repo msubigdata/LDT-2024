@@ -3,9 +3,18 @@ from drf_chunked_upload.models import ChunkedUpload
 
 from location.models import File
 
+VIDEO_FORMAT = ["mp4", "avi", "mpv"]
+
+PHOTO_FORMAT = ["jpg", "png", "jpeg"]
+
 
 class FileUploadChunked(ChunkedUpload):
-    file = models.OneToOneField(File, models.CASCADE, verbose_name="Файл", related_name="chunked_upload")
+    upload_file = models.OneToOneField(
+        File,
+        models.CASCADE,
+        verbose_name="Файл",
+        related_name="chunked_upload",
+    )
 
     class Meta:
         verbose_name = "Чанк"

@@ -1,12 +1,8 @@
 # Create your views here.
 from rest_framework import generics
 
-from location.serializers import (
-    CameraSerializer,
-    FileSerializer,
-    LocationSerializer,
-)
 from location.models import Camera, File, Location
+from location.serializers import CameraSerializer, FileSerializer, LocationSerializer
 
 
 class LocationListView(generics.ListAPIView):
