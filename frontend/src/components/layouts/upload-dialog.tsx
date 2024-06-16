@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
+import { FileImage, FileVideo } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { type z } from "zod";
+import { useToggle } from "usehooks-ts";
 
 import { Button } from "@/components/ui/button";
 import { useCams } from "@/hooks/camera";
 import { useLocations } from "@/hooks/location";
 import { createFileSchema } from "@/types/upload";
+import { cn } from "@/utils/cn";
 import { customZodResolver } from "@/utils/zod";
 
 import type { CreateFileInput } from "@/types/upload";
@@ -20,32 +22,39 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 interface UploadDialogProps {
   open: boolean;
   onClose: () => void;
-  isLoading: boolean;
-  onSubmit: (values: CreateFileInput) => void;
 }
 
-export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialogProps) {
+export function UploadDialog({ open, onClose }: UploadDialogProps) {
+  const [isLoading, toggleLoading] = useToggle(false);
+  const handleClose = () => {
+    onClose();
+  };
+
   const form = useForm<CreateFileInput>({
     defaultValues: { camera: "", location: "" },
     resolver: customZodResolver(createFileSchema),
   });
 
-  const submitHandler = (values: z.infer<typeof createFileSchema>) => {
-    onSubmit(values);
+  const watchedLocation = form.watch("location");
+  const watchedCamera = form.watch("camera");
 
-    // await router.invalidate();
+  const submitHandler = () => {
+    toggleLoading();
+
+    void fileRequests.uploadFile
+      .fn(file, watchedCamera)
+      .then(() => {
+        handleClose();
+      })
+      .finally(() => {
+        toggleLoading();
+      });
   };
 
   const formHasErrors = Boolean(Object.keys(form.formState.errors).length);
 
-  const handleClose = () => {
-    onClose();
-  };
-
   const { locationList, isFetching: locationsFetching } = useLocations();
   const { camsList, isFetching: camsFetching } = useCams();
-
-  const watchedLocation = form.watch("location");
 
   const camsOptions = camsList?.filter((el) => el.location.toString() === watchedLocation);
 
@@ -66,7 +75,13 @@ export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialo
         </Dialog.Header>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitHandler)} className="w-full space-y-6">
+          <form
+            onSubmit={form.handleSubmit(submitHandler)}
+            className={cn(
+              "w-full space-y-6",
+              isLoading ? "pointer-events-none opacity-50" : "pointer-events-auto opacity-100",
+            )}
+          >
             <Form.Field
               control={form.control}
               name="location"
@@ -76,7 +91,7 @@ export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialo
                   <Form.Label>Локация</Form.Label>
                   <Select
                     onValueChange={(e) => {
-                      if (form.watch("camera")) {
+                      if (watchedCamera) {
                         form.setValue("camera", "");
                       }
 
@@ -145,15 +160,26 @@ export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialo
               }}
             />
 
-            {file?.name}
-
-            <Button
-              onClick={() => {
-                void fileRequests.uploadFile.fn(file);
-              }}
-            >
-              Upload
-            </Button>
+            {file ? (
+              <div className="flex items-center gap-2 text-sm">
+                {file.name.includes(".mp4") ? (
+                  <FileVideo className="size-4" />
+                ) : (
+                  <FileImage className="size-4" />
+                )}
+                {file.name}
+                {/* <Button
+                onClick={() => {
+                  setFile(undefined);
+                }}
+                variant="ghost"
+                className="scale-75"
+                size="sm"
+              >
+                <XIcon className="text-destructive" />
+              </Button> */}
+              </div>
+            ) : undefined}
 
             <Dialog.Footer>
               <Button onClick={handleClose} variant="outline">

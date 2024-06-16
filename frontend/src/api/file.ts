@@ -6,6 +6,7 @@ import { calculateMD5 } from "@/utils/md5";
 
 import { axiosInstance } from "./axios";
 
+// следующий url приходит вместе с хостом от бекенда, тут мы его просто вырезаем
 function cutSubstring(url: string) {
   const baseUrl = "http://158.160.61.99/api/";
   const trimmedUrl = url.replace(baseUrl, "");
@@ -22,8 +23,8 @@ export const fileRequests = {
   },
   uploadFile: {
     key: ["UPLOAD_FILE"],
-    fn: async (file?: File) => {
-      if (!file) return;
+    fn: async (file?: File, cameraId?: string) => {
+      if (!file || !cameraId) return;
       const toastLoader = toast(`Идет загрузка файла.. 0`);
 
       let uploadProgress = 0;
@@ -38,7 +39,7 @@ export const fileRequests = {
         const formData = new FormData();
         formData.append("file", chunk, file.name);
         formData.append("filename", file.name);
-        formData.append("camera", "1");
+        formData.append("camera", cameraId);
 
         const response = await axiosInstance.put(cutSubstring(url), formData, {
           headers: {

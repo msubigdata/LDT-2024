@@ -6,6 +6,7 @@ interface TimelineEvent {
   time: number;
   type: "normal" | "threat";
   previewUrl: string;
+  description: string;
 }
 
 interface TimelineProps {
@@ -50,7 +51,7 @@ export function Timeline({ events, currentTime, duration, onEventClick }: Timeli
               />
             </Tooltip.Trigger>
             <Tooltip.Content
-              className="p-2"
+              className="flex items-start gap-2 p-2"
               onClick={(e) => {
                 e.stopPropagation();
                 onEventClick(event.time);
@@ -61,6 +62,7 @@ export function Timeline({ events, currentTime, duration, onEventClick }: Timeli
                 alt={event.time.toString()}
                 className="size-24 rounded-md object-cover"
               />
+              <div className="p-3 text-sm">{event.description}</div>
             </Tooltip.Content>
           </Tooltip>
         ))}

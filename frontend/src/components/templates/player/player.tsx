@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import preview1 from "@/assets/preview-1.png";
+import preview2 from "@/assets/preview-2.png";
+import testVideo from "@/assets/test.mp4";
 import { PageLoader } from "@/components/modules/page-loader";
 
 import { VideoHighlights } from "./highlights";
@@ -31,20 +34,20 @@ export function Player() {
   useEffect(() => {
     const testVideoData: VideoData = {
       id: "1",
-      url: "https://vjs.zencdn.net/v/oceans.mp4",
+      url: testVideo,
       title: "Название видео",
       description: "Дата и время загрузки",
       highlights: [
         {
-          time: 5,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 5s",
-          type: "normal",
+          time: 1.5,
+          previewUrl: preview1,
+          description: "Дрон коптерного типа",
+          type: "threat",
         },
         {
-          time: 10,
-          previewUrl: "https://via.placeholder.com/150",
-          description: "Highlight at 10s",
+          time: 10.25,
+          previewUrl: preview2,
+          description: "Дрон коптерного типа",
           type: "threat",
         },
       ],
@@ -98,10 +101,11 @@ export function Player() {
             onLoadedMetadata={handleLoadedMetadata}
           />
           <Timeline
-            events={videoData.highlights.map(({ time, type, previewUrl }) => ({
+            events={videoData.highlights.map(({ time, type, previewUrl, description }) => ({
               time,
               type,
               previewUrl,
+              description,
             }))}
             currentTime={currentTime}
             duration={duration}
