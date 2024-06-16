@@ -108,14 +108,7 @@ function AppBar() {
         </DropdownMenu>
       </div>
 
-      <UploadDialog
-        onSubmit={(data) => {
-          console.log(data);
-        }}
-        isLoading={false}
-        open={openUploadDialog}
-        onClose={toggleUploadDialog}
-      />
+      <UploadDialog open={openUploadDialog} onClose={toggleUploadDialog} />
     </div>
   );
 }

@@ -3,16 +3,16 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 
+import { CameraFile } from "@/components/templates/camera-file";
+import { LocationSearch } from "@/components/templates/location-search";
 import { Player } from "@/components/templates/player";
-import { Button } from "@/components/ui/button";
 import { Collapsible } from "@/components/ui/collapsible";
-import { Input } from "@/components/ui/input";
 import { useCams } from "@/hooks/camera";
 import { useFiles } from "@/hooks/file";
 import { useLocations } from "@/hooks/location";
 import { type FileType, type LocationType } from "@/types";
 import { cn } from "@/utils/cn";
-import { getHighlightedText } from "@/utils/highlighning";
+import { getHighlightedText } from "@/utils/highlighting";
 import { plural } from "@/utils/plural";
 
 import type { Dispatch, SetStateAction } from "react";
@@ -115,7 +115,7 @@ function Location({
         }}
       >
         <div className="flex w-full items-center justify-between text-sm">
-          <span>{getHighlightedText(title, search)}</span>
+          <span>{search ? getHighlightedText(title, search) : title}</span>
           <ChevronDown
             size="1rem"
             className={cn("transition-transform", isOpen ? "rotate-180" : "")}
@@ -128,54 +128,9 @@ function Location({
       </Collapsible.Trigger>
       <Collapsible.Content className="flex flex-col gap-3 pt-1">
         {files?.map((f) => (
-          <LocationFile
-            onFileSelect={onFileSelect}
-            selectedFile={selectedFile}
-            file={f}
-            key={f.id}
-          />
+          <CameraFile onFileSelect={onFileSelect} selectedFile={selectedFile} file={f} key={f.id} />
         ))}
       </Collapsible.Content>
     </Collapsible>
-  );
-}
-
-interface LocationFileProps {
-  file: FileType;
-  selectedFile?: FileType;
-  onFileSelect: Dispatch<SetStateAction<FileType | undefined>>;
-}
-function LocationFile({ file, selectedFile, onFileSelect }: LocationFileProps) {
-  const fileSelected = file.id === selectedFile?.id;
-  return (
-    <Button
-      variant="link"
-      className={cn("justify-start text-sm", fileSelected ? "text-primary" : "text-foreground")}
-      onClick={() => {
-        onFileSelect(file);
-      }}
-    >
-      {file.title}
-    </Button>
-  );
-}
-
-interface LocationSearchProps {
-  search: string;
-  setSearch: (s: string) => void;
-}
-
-function LocationSearch({ search, setSearch }: LocationSearchProps) {
-  return (
-    <div className="flex flex-col gap-3">
-      <Input
-        className="w-full !ring-0 !ring-offset-0"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-        }}
-        placeholder="Найти локацию.."
-      />
-    </div>
   );
 }
