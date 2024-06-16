@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
 
+import { Player } from "@/components/templates/player";
 import { Button } from "@/components/ui/button";
 import { Collapsible } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
@@ -61,7 +62,10 @@ function ViewComponent() {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">Выберите файл для просмотра</div>
+      <div className="flex flex-1 items-center justify-center">
+        {/* Выберите файл для просмотра */}
+        <Player />
+      </div>
     </div>
   );
 }
