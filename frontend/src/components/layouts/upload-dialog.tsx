@@ -70,7 +70,7 @@ export function UploadDialog({ open, onClose }: UploadDialogProps) {
         <Dialog.Header>
           <Dialog.Title>Добавление материала</Dialog.Title>
           <Dialog.Description>
-            Загруженное видео будет автоматически обработано искусственным интеллектом
+            Загруженный файл будет автоматически обработан искусственным интеллектом
           </Dialog.Description>
         </Dialog.Header>
 
@@ -147,6 +147,7 @@ export function UploadDialog({ open, onClose }: UploadDialogProps) {
             />
 
             <FileDropzone
+              description="Загрузите фото или видео"
               accept={{
                 "image/*": [],
                 "video/*": [],
@@ -168,16 +169,6 @@ export function UploadDialog({ open, onClose }: UploadDialogProps) {
                   <FileImage className="size-4" />
                 )}
                 {file.name}
-                {/* <Button
-                onClick={() => {
-                  setFile(undefined);
-                }}
-                variant="ghost"
-                className="scale-75"
-                size="sm"
-              >
-                <XIcon className="text-destructive" />
-              </Button> */}
               </div>
             ) : undefined}
 
