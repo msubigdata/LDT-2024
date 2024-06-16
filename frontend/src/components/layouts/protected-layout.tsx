@@ -77,7 +77,7 @@ function AppBar() {
     <div className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b px-4">
       <div>{appConfig.navLinks.find((link) => link.to === pathname)?.title} </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
         <Button
           size="sm"
           onClick={() => {
@@ -87,9 +87,16 @@ function AppBar() {
           <PlusCircleIcon className="mr-2 size-4" /> Добавить материал
         </Button>
         <DropdownMenu>
-          <DropdownMenu.Trigger className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Settings className="size-5" />
-            <span>Настройки</span>
+          <DropdownMenu.Trigger asChild>
+            <Button
+              size="sm"
+              onClick={() => {
+                toggleUploadDialog();
+              }}
+              variant="ghost"
+            >
+              <Settings className="mr-2 size-4" /> Настройки
+            </Button>
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Content side="bottom" align="end" sideOffset={10}>
@@ -101,7 +108,14 @@ function AppBar() {
         </DropdownMenu>
       </div>
 
-      <UploadDialog open={openUploadDialog} onClose={toggleUploadDialog} />
+      <UploadDialog
+        onSubmit={(data) => {
+          console.log(data);
+        }}
+        isLoading={false}
+        open={openUploadDialog}
+        onClose={toggleUploadDialog}
+      />
     </div>
   );
 }

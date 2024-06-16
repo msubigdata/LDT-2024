@@ -168,9 +168,8 @@ interface LocationSearchProps {
 function LocationSearch({ search, setSearch }: LocationSearchProps) {
   return (
     <div className="flex flex-col gap-3">
-      {/* <div>Локации</div> */}
       <Input
-        className="w-full"
+        className="w-full !ring-0 !ring-offset-0"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
