@@ -2,14 +2,22 @@ import { useEffect, useMemo, useRef } from "react";
 
 import "leaflet/dist/leaflet.css";
 
+import { Icon } from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
+import MarkerIcon from "@/assets/marker.svg";
 import { PageLoader } from "@/components/modules/page-loader";
-import { Button } from "@/components/ui/button";
 import { type Camera } from "@/types";
 
 import type { LatLngExpression, Map as MapType } from "leaflet";
 import type { RefObject } from "react";
+
+const customIcon = new Icon({
+  iconUrl: MarkerIcon,
+  iconSize: [32, 32], // размер иконки
+  iconAnchor: [16, 32], // точка привязки иконки (центр внизу)
+  popupAnchor: [0, -32], // точка привязки popup
+});
 
 interface MapProps {
   cams?: Camera[];
@@ -64,10 +72,12 @@ export function Map({ cams, aim, isLoading }: MapProps) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {cams?.map((cam) => (
-        <Marker position={[Number(cam.latitude), Number(cam.longitude)]} key={cam.id}>
-          <Popup>
-            <Button>{cam.title}</Button>
-          </Popup>
+        <Marker
+          icon={customIcon}
+          position={[Number(cam.latitude), Number(cam.longitude)]}
+          key={cam.id}
+        >
+          <Popup>{cam.title}</Popup>
         </Marker>
       ))}
     </MapContainer>
