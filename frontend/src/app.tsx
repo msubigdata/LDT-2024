@@ -8,6 +8,7 @@ import { ZodError } from "zod";
 import { PageLoader } from "./components/modules/page-loader";
 import { AuthProvider, useAuthContext } from "./components/providers/auth";
 import { ThemeProvider, useTheme } from "./components/providers/theme";
+import { Toaster } from "./components/ui/sonner";
 import { routeTree } from "./generated/routes";
 
 const queryClient = new QueryClient({
@@ -57,6 +58,7 @@ export function App() {
         <AuthProvider>
           <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             <InnerApp />
+            <Toaster />
           </ThemeProvider>
         </AuthProvider>
       </Suspense>

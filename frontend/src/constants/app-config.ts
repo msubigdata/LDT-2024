@@ -21,4 +21,5 @@ const MODULES = [
 export const appConfig = {
   name: "Sky Wall",
   navLinks: MODULES,
+  chunkSize: 10 * 1024 * 1024, // 10 MB
 };

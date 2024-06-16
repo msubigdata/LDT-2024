@@ -11,7 +11,8 @@ import { customZodResolver } from "@/utils/zod";
 
 import type { CreateFileInput } from "@/types/upload";
 
-import { Dropzone } from "../modules/drop-zone";
+import { fileRequests } from "../../api/file";
+import { FileDropzone } from "../modules/drop-zone";
 import { Dialog } from "../ui/dialog";
 import { Form } from "../ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -24,8 +25,6 @@ interface UploadDialogProps {
 }
 
 export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialogProps) {
-  const [files, setFiles] = useState<string[]>([]);
-
   const form = useForm<CreateFileInput>({
     defaultValues: { camera: "", location: "" },
     resolver: customZodResolver(createFileSchema),
@@ -54,11 +53,13 @@ export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialo
     form.reset();
   }, [form]);
 
+  const [file, setFile] = useState<File>();
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <Dialog.Content className="sm:max-w-[625px]">
         <Dialog.Header>
-          <Dialog.Title>Загрузить видео</Dialog.Title>
+          <Dialog.Title>Добавление материала</Dialog.Title>
           <Dialog.Description>
             Загруженное видео будет автоматически обработано искусственным интеллектом
           </Dialog.Description>
@@ -130,11 +131,30 @@ export function UploadDialog({ open, onClose, isLoading, onSubmit }: UploadDialo
               )}
             />
 
-            <Dropzone onChange={setFiles} className="w-full" fileExtension="png" />
+            <FileDropzone
+              accept={{
+                "image/*": [],
+                "video/*": [],
+              }}
+              multiple={false}
+              maxSize={10 * 1024 * 1024 * 1024}
+              onDrop={(files) => {
+                files.forEach((f) => {
+                  setFile(f);
+                });
+              }}
+            />
 
-            {files.map((el) => (
-              <div key={el}>{el}</div>
-            ))}
+            {file?.name}
+
+            <Button
+              onClick={() => {
+                void fileRequests.uploadFile.fn(file);
+              }}
+            >
+              Upload
+            </Button>
+
             <Dialog.Footer>
               <Button onClick={handleClose} variant="outline">
                 Отмена

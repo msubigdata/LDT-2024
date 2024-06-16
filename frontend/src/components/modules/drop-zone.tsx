@@ -1,96 +1,36 @@
-import React, { useRef, useState } from "react";
+import { CloudUploadIcon } from "lucide-react";
+import { useDropzone } from "react-dropzone";
 
-import { Card, CardContent } from "../ui/card";
+import { cn } from "@/utils/cn";
 
-// Define the props expected by the Dropzone component
-interface DropzoneProps {
-  onChange: React.Dispatch<React.SetStateAction<string[]>>;
-  className?: string;
-  fileExtension?: string;
-}
+import type { DropzoneOptions } from "react-dropzone";
 
-// Create the Dropzone component receiving props
-export function Dropzone({ onChange, className, fileExtension, ...props }: DropzoneProps) {
-  // Initialize state variables using the useState hook
-  const fileInputRef = useRef<HTMLInputElement | null>(null); // Reference to file input element
-  const [fileInfo, setFileInfo] = useState<string | null>(null); // Information about the uploaded file
-  const [error, setError] = useState<string | null>(null); // Error message state
+type FileDropzoneProps = DropzoneOptions & {
+  description?: JSX.Element;
+};
 
-  // Function to handle drag over event
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+export function FileDropzone(options?: FileDropzoneProps) {
+  const { description = "Выберите файл", disabled, ...rest } = options ?? {};
 
-  // Function to handle drop event
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const { files } = e.dataTransfer;
-    handleFiles(files);
-  };
-
-  // Function to handle file input change event
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
-    if (files) {
-      handleFiles(files);
-    }
-  };
-
-  // Function to handle processing of uploaded files
-  const handleFiles = (files: FileList) => {
-    const uploadedFile = files[0];
-
-    // Check file extension
-    if (fileExtension && !uploadedFile.name.endsWith(`.${fileExtension}`)) {
-      setError(`Invalid file type. Expected: .${fileExtension}`);
-      return;
-    }
-
-    const fileSizeInKB = Math.round(uploadedFile.size / 1024); // Convert to KB
-
-    const fileList = Array.from(files).map((file) => URL.createObjectURL(file));
-    onChange((prevFiles) => [...prevFiles, ...fileList]);
-
-    // Display file information
-    setFileInfo(`Uploaded file: ${uploadedFile.name} (${fileSizeInKB} KB)`);
-    setError(null); // Reset error state
-  };
-
-  // Function to simulate a click on the file input element
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    disabled,
+    ...rest,
+  });
 
   return (
-    <Card
-      className={`border-2 border-dashed bg-muted hover:cursor-pointer hover:border-muted-foreground/50 ${className}`}
-      {...props}
+    <div
+      className={cn(
+        "group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed bg-muted p-6 text-sm text-muted-foreground",
+        isDragActive && "border-primary",
+        disabled && "opacity-50",
+      )}
+      {...getRootProps()}
     >
-      <CardContent
-        className="flex flex-col items-center justify-center space-y-2 px-2 py-10 text-xs"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        onClick={handleButtonClick}
-      >
-        <div className="flex items-center justify-center text-muted-foreground">
-          <span className="font-medium">Переместите файл в эту зону или нажмите для выбора</span>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept={`.${fileExtension}`} // Set accepted file type
-            onChange={handleFileInputChange}
-            className="hidden"
-            multiple
-          />
-        </div>
-        {fileInfo ? <p className="text-muted-foreground">{fileInfo}</p> : null}
-        {error ? <span className="text-destructive">{error}</span> : null}
-      </CardContent>
-    </Card>
+      <div className="rounded-md border p-2">
+        <CloudUploadIcon className="text-current group-hover:animate-pulse" size={20} />
+      </div>
+      <input {...getInputProps()} />
+      {description}
+    </div>
   );
 }
