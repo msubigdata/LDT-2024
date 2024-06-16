@@ -35,7 +35,7 @@ export const VideoPlayer = forwardRef<{ seekTo: (time: number) => void }, VideoP
     }, [onTimeUpdate]);
 
     return (
-      <div className="mb-4 w-full">
+      <div className="mb-4 w-full shrink-0">
         <video
           ref={videoRef}
           src={videoUrl}

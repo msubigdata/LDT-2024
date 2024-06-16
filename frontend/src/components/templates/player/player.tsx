@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import { PageLoader } from "@/components/modules/page-loader";
+
 import { VideoHighlights } from "./highlights";
 import { Timeline } from "./timeline";
 import { VideoPlayer } from "./video-player";
@@ -45,6 +47,138 @@ export function Player() {
           description: "Highlight at 10s",
           type: "threat",
         },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
+        {
+          time: 5,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 5s",
+          type: "normal",
+        },
+        {
+          time: 10,
+          previewUrl: "https://via.placeholder.com/150",
+          description: "Highlight at 10s",
+          type: "threat",
+        },
       ],
     };
 
@@ -52,9 +186,15 @@ export function Player() {
     setLoading(false);
   }, []);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const handleHighlightClick = (time: number) => {
     if (videoPlayerRef.current) {
       videoPlayerRef.current.seekTo(time);
+    }
+
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -74,15 +214,15 @@ export function Player() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <PageLoader>Загрузка видео</PageLoader>;
   }
 
   return (
-    <div className="p-4">
+    <div className="size-full flex-1 pb-10 pt-3" ref={containerRef}>
       {videoData ? (
         <>
-          <h1 className="text-2xl font-bold">{videoData.title}</h1>
-          <p className="mb-4">{videoData.description}</p>
+          {/* <h1 className="text-2xl font-bold">{videoData.title}</h1>
+          <p className="mb-4">{videoData.description}</p> */}
           <VideoPlayer
             ref={videoPlayerRef}
             videoUrl={videoData.url}

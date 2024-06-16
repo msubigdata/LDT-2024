@@ -15,6 +15,8 @@ import { cn } from "@/utils/cn";
 import { getHighlightedText } from "@/utils/highlighning";
 import { plural } from "@/utils/plural";
 
+import type { Dispatch, SetStateAction } from "react";
+
 export const Route = createFileRoute("/_protected/view/")({
   component: () => <ViewComponent />,
 });
@@ -27,6 +29,7 @@ function ViewComponent() {
   const { filesList } = useFiles();
 
   const [selectedLocation, setSelectedLocation] = useState<number>();
+  const [selectedFile, setSelectedFile] = useState<FileType>();
 
   const selectedCamera = useMemo(
     () => camsList?.find((c) => c.location === selectedLocation),
@@ -43,11 +46,11 @@ function ViewComponent() {
   );
 
   return (
-    <div className="flex h-full gap-6">
+    <div className="flex h-full gap-6 overflow-hidden">
       <div className="flex w-72 flex-col gap-3 border-r py-4 pr-4">
         <LocationSearch search={search} setSearch={setSearch} />
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 overflow-y-auto">
           {filteredLocationList?.map((loc) => (
             <Location
               location={loc}
@@ -57,35 +60,40 @@ function ViewComponent() {
               files={files}
               camsCount={camsList?.filter((c) => c.location === loc.id).length ?? 0}
               search={search}
+              selectedFile={selectedFile}
+              onFileSelect={setSelectedFile}
             />
           ))}
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
-        {/* Выберите файл для просмотра */}
-        <Player />
+      <div className="flex flex-1 items-center justify-center overflow-y-auto">
+        {selectedFile ? <Player /> : <div>Выберите файл для просмотра</div>}
       </div>
     </div>
   );
 }
 
 interface LocationProps {
+  search: string;
   location: LocationType;
   selectedLocation?: number;
   setSelectedLocation: (id?: number) => void;
   files?: FileType[];
   camsCount: number;
-  search: string;
+  selectedFile?: FileType;
+  onFileSelect: Dispatch<SetStateAction<FileType | undefined>>;
 }
 
 function Location({
+  search,
   location,
   selectedLocation,
   setSelectedLocation,
   files,
   camsCount,
-  search,
+  onFileSelect,
+  selectedFile,
 }: LocationProps) {
   const { id, title } = location;
 
@@ -119,9 +127,36 @@ function Location({
         </div>
       </Collapsible.Trigger>
       <Collapsible.Content className="flex flex-col gap-3 pt-1">
-        {files?.map((f) => <LocationFile file={f} key={f.id} />)}
+        {files?.map((f) => (
+          <LocationFile
+            onFileSelect={onFileSelect}
+            selectedFile={selectedFile}
+            file={f}
+            key={f.id}
+          />
+        ))}
       </Collapsible.Content>
     </Collapsible>
+  );
+}
+
+interface LocationFileProps {
+  file: FileType;
+  selectedFile?: FileType;
+  onFileSelect: Dispatch<SetStateAction<FileType | undefined>>;
+}
+function LocationFile({ file, selectedFile, onFileSelect }: LocationFileProps) {
+  const fileSelected = file.id === selectedFile?.id;
+  return (
+    <Button
+      variant="link"
+      className={cn("justify-start text-sm", fileSelected ? "text-primary" : "text-foreground")}
+      onClick={() => {
+        onFileSelect(file);
+      }}
+    >
+      {file.title}
+    </Button>
   );
 }
 
@@ -143,16 +178,5 @@ function LocationSearch({ search, setSearch }: LocationSearchProps) {
         placeholder="Найти локацию.."
       />
     </div>
-  );
-}
-
-interface LocationFileProps {
-  file: FileType;
-}
-function LocationFile({ file }: LocationFileProps) {
-  return (
-    <Button variant="link" className="justify-start text-sm">
-      {file.title}
-    </Button>
   );
 }

@@ -31,10 +31,10 @@ export function Timeline({ events, currentTime, duration, onEventClick }: Timeli
       onClick={handleTimelineClick}
       className="relative my-5 h-8 w-full cursor-pointer bg-muted"
     >
-      {events.map((event, index) => (
+      {events.map((event) => (
         <div
           role="presentation"
-          key={index}
+          key={event.time}
           onClick={(e) => {
             e.stopPropagation();
             onEventClick(event.time);

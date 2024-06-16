@@ -12,11 +12,11 @@ interface VideoHighlightsProps {
 
 export function VideoHighlights({ highlights, onHighlightClick }: VideoHighlightsProps) {
   return (
-    <div className="mt-4 flex flex-wrap gap-4">
-      {highlights.map((highlight, index) => (
+    <div className="mt-4 grid grid-cols-4 gap-4 pb-10">
+      {highlights.map((highlight) => (
         <button
           type="button"
-          key={index}
+          key={highlight.time}
           onClick={() => {
             onHighlightClick(highlight.time);
           }}
@@ -25,7 +25,7 @@ export function VideoHighlights({ highlights, onHighlightClick }: VideoHighlight
           <img
             src={highlight.previewUrl}
             alt={highlight.description}
-            className="size-32 object-cover"
+            className="h-32 w-full object-cover"
           />
           <p>{highlight.description}</p>
         </button>
