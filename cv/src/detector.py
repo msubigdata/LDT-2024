@@ -9,7 +9,7 @@ PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__f
 class Detector:
     def __init__(self, config):
         self.config = config
-        self.model = YOLO(self.config.model_path)
+        self.model = YOLO(self.config.model_path).to('cpu')
 
     def predict(self, image_path):
         predictions = self.model.predict(image_path,
