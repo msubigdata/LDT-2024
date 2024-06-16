@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 import type { DropzoneOptions } from "react-dropzone";
 
 type FileDropzoneProps = DropzoneOptions & {
-  description?: JSX.Element;
+  description?: string;
 };
 
 export function FileDropzone(options?: FileDropzoneProps) {
