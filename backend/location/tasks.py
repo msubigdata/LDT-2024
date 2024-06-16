@@ -1,9 +1,12 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 import ultralytics
 from celery import shared_task
 from cv.src.config import DetectorConfig
 from cv.src.detector import Detector
+from django.core.files import File as DFile
 
 from location.models import File
 
@@ -23,10 +26,16 @@ def video_processing(file_id):
     file = file_obj.chunked_upload.file
     file_path = file.file.name
 
-    processing(file_path)
+    new_file = Path(Path(file_path).parent, file_obj.title)
+
+    processing(file_path, new_file)
+
+    with open(new_file, mode="rb") as f:
+        file_obj.processing_file = DFile(f, name=file_obj.title)
+        file_obj.save()
 
 
-def processing(video_path):
+def processing(video_path, file_name):
     cap = cv2.VideoCapture(video_path)
 
     # Получаем информацию о видео (размер кадра, FPS и т. д.)
@@ -61,10 +70,7 @@ def processing(video_path):
 
         out.write(frame)
 
-        # Отображаем кадр
-        cv2.imshow("Frame", frame)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+        cv2.imwrite(file_name, frame)
 
     cap.release()
     out.release()

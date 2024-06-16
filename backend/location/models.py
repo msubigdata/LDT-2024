@@ -71,10 +71,8 @@ class File(models.Model):
         verbose_name="Markdown",
     )
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    content = models.CharField(
-        max_length=10,
-        choices=TypeContent.choices,
-        verbose_name="Тип содержимого",
+    processing_file = models.FileField(
+        verbose_name="Обработанный файл", upload_to="file/", blank=True, null=True
     )
 
     chunked_upload: Union["FileUploadChunked", models.Manager]
