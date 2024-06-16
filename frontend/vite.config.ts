@@ -4,6 +4,7 @@ import { defineConfig, loadEnv } from "vite";
 
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import react from "@vitejs/plugin-react-swc";
+import svgr from "vite-plugin-svgr";
 
 import type { ServerOptions } from "vite";
 
@@ -44,6 +45,7 @@ export default defineConfig(({ mode }) => ({
   server: configureProxy(mode),
   plugins: [
     react(),
+    svgr(),
     TanStackRouterVite({
       generatedRouteTree: "./src/generated/routes.ts",
       quoteStyle: "double",
