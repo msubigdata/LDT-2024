@@ -100,7 +100,7 @@ SPECTACULAR_SETTINGS = {
 
 HOST = env.str("HOST", default="http://localhost:8000")
 
-CSRF_TRUSTED_ORIGINS = ["http://255.255.116.8"]
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
 
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
