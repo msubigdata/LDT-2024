@@ -35,9 +35,14 @@ class Camera(models.Model):
 
 
 class File(models.Model):
+    class TypeContent(models.TextChoices):
+        VIDEO = "video", "Видео"
+        PHOTO = "photo", "Фото"
+
     title = models.CharField(max_length=255, verbose_name="Название")
     camera = models.ForeignKey(Camera, related_name="files", on_delete=models.CASCADE, verbose_name="Камера")
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
 
     chunked_upload: Union["FileUploadChunked", models.Manager]
 
