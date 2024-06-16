@@ -41,6 +41,8 @@ class File(models.Model):
 
     title = models.CharField(max_length=255, verbose_name="Название")
     camera = models.ForeignKey(Camera, related_name="files", on_delete=models.CASCADE, verbose_name="Камера")
+    content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
+    markdown = models.JSONField(default={}, null=True, blank=True, verbose_name="Markdown")
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     content = models.CharField(max_length=10, choices=TypeContent.choices, verbose_name="Тип содержимого")
 
