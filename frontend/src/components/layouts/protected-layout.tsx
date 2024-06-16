@@ -71,7 +71,8 @@ function AppBar() {
     });
   };
 
-  const name = `${user?.first_name} ${user?.last_name}`;
+  const name =
+    user?.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user?.username;
 
   return (
     <div className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b px-4">
