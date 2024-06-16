@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 
 import { PageLoader } from "./components/modules/page-loader";
 import { AuthProvider, useAuthContext } from "./components/providers/auth";
+import { ThemeProvider, useTheme } from "./components/providers/theme";
 import { routeTree } from "./generated/routes";
 
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ const router = createRouter({
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   context: {
     auth: undefined!,
+    theme: undefined!,
     queryClient,
   },
 });
@@ -43,8 +45,9 @@ declare module "@tanstack/react-router" {
 
 function InnerApp() {
   const auth = useAuthContext();
+  const theme = useTheme();
 
-  return <RouterProvider router={router} context={{ auth }} />;
+  return <RouterProvider router={router} context={{ auth, theme, queryClient }} />;
 }
 
 export function App() {
@@ -52,7 +55,9 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<PageLoader />}>
         <AuthProvider>
-          <InnerApp />
+          <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+            <InnerApp />
+          </ThemeProvider>
         </AuthProvider>
       </Suspense>
     </QueryClientProvider>

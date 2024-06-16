@@ -41,6 +41,8 @@ const requestRefresh: TokenRefreshRequest = async (
 // 3. Add interceptor to your axios instance
 applyAuthTokenInterceptor(axiosInstance, {
   requestRefresh,
+  // header: "Authorization", // header name
+  // headerPrefix: "Bearer ", // header value prefix
 });
 
 // New to 2.2.0+: initialize with storage: localStorage/sessionStorage/nativeStorage. Helpers: getBrowserLocalStorage, getBrowserSessionStorage

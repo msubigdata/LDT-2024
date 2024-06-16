@@ -64,6 +64,8 @@ function AppBar() {
     });
   };
 
+  const name = `${user?.first_name} ${user?.last_name}`;
+
   return (
     <div className="flex h-14 w-full items-center justify-end gap-4">
       <DropdownMenu>
@@ -73,9 +75,9 @@ function AppBar() {
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content side="bottom" align="end" sideOffset={10}>
-          <DropdownMenu.Label>{user?.username}</DropdownMenu.Label>
+          <DropdownMenu.Label>{name}</DropdownMenu.Label>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item>Profile</DropdownMenu.Item>
+
           <DropdownMenu.Item>Billing</DropdownMenu.Item>
           <DropdownMenu.Item>Team</DropdownMenu.Item>
           <DropdownMenu.Item>Subscription</DropdownMenu.Item>
